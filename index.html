@@ -1,72 +1,254 @@
 <!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DOJ Intranet</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0b1220;
+color:#e7eefc;
+}
+header{
+background:#111d35;
+padding:18px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid #22395f;
+}
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+nav{
+background:#13223f;
+padding:12px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+nav button{
+background:#1d3358;
+border:none;
+color:white;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+}
+nav button:hover{
+background:#29497b;
+}
+.page{
+display:none;
+padding:30px;
+}
+.active{
+display:block;
+}
+.card{
+background:#152744;
+padding:20px;
+border-radius:14px;
+margin-bottom:20px;
+box-shadow:0 0 12px rgba(0,0,0,.4);
+}
+table{
+width:100%;
+border-collapse:collapse;
+}
+th,td{
+padding:12px;
+border-bottom:1px solid #27446f;
+}
+.badge{
+padding:6px 12px;
+border-radius:8px;
+background:#2758aa;
+display:inline-block;
+}
+input,select,textarea{
+width:100%;
+padding:10px;
+background:#0d1a2d;
+color:white;
+border:1px solid #28486e;
+border-radius:8px;
+margin-top:8px;
+}
+button.action{
+margin-top:15px;
+background:#c9b17a;
+color:black;
+font-weight:bold;
+}
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:25px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">U.S Department of Justice</div>
+<div>DNR 05 | Director Homeland Security</div>
+</header>
+
+<nav>
+<button onclick="showPage('dienst')">Dienstblatt</button>
+<button onclick="showPage('mitarbeiter')">Mitarbeiter</button>
+<button onclick="showPage('einsaetze')">Einsätze</button>
+<button onclick="showPage('iaa')">IAA</button>
+<button onclick="showPage('ausbildung')">Ausbildung</button>
+<button onclick="showPage('bussgeld')">Bußgeld</button>
+<button onclick="showPage('leader')">Leader</button>
+</nav>
+
+<section id="dienst" class="page active">
+<div class="card">
+<h2>Dienststatus</h2>
+<select>
+<option>Außendienst</option>
+<option>Innendienst</option>
+</select>
+<button class="action">Status speichern</button>
+</div>
+</section>
+
+<section id="mitarbeiter" class="page">
+<div class="card">
+<h2>Mitarbeiterübersicht</h2>
+<table>
+<tr>
+<th>DNR</th><th>Name</th><th>Rang</th>
 </tr>
-<tr data-title='Widerstand gegen Beamte'>
-<td><input type='checkbox' onchange='calc(this,5700,10,"§4 Abs1.2")'></td><td>§4 Abs1.2</td><td>Widerstand gegen Beamte</td><td>5700</td><td>10</td>
+<tr>
+<td>05</td>
+<td>Tyler Coleman</td>
+<td><span class="badge">Director</span></td>
+</tr>
+<tr>
+<td>03</td>
+<td>Paul Shelby</td>
+<td><span class="badge">Ass. Chief</span></td>
 </tr>
 </table>
 </div>
-<div class='card summary'>
-<h3>Strafen Rechner</h3>
-<p>Bußgeld: $<span id='sumFine'>0</span></p>
-<p>Haft: <span id='sumJail'>0</span> Monate</p>
-<textarea id='charges' rows='8'></textarea>
-<button class='btn' onclick='copyCharges()'>Paragraphen kopieren</button>
+</section>
+
+<section id="einsaetze" class="page">
+<div class="card">
+<h2>Neuer Einsatz</h2>
+<input placeholder="Code">
+<input placeholder="Titel">
+<textarea placeholder="Lagebeschreibung"></textarea>
+<button class="action">Einsatz erstellen</button>
+</div>
+</section>
+
+<section id="iaa" class="page">
+<div class="card">
+<h2>IAA Routen</h2>
+<input placeholder="Route">
+<input placeholder="Startpunkt">
+<input placeholder="Endpunkt">
+<button class="action">Route speichern</button>
+</div>
+</section>
+
+<section id="ausbildung" class="page">
+<div class="card">
+<h2>Ausbildungsverwaltung</h2>
+<input placeholder="Titel">
+<select>
+<option>Geplant</option>
+<option>Abgeschlossen</option>
+</select>
+<button class="action">Eintrag speichern</button>
+</div>
+</section>
+
+<section id="bussgeld" class="page">
+<div class="grid">
+<div class="card">
+<h2>Bußgeldkatalog</h2>
+
+<label>
+<input type="checkbox" onchange="calc(this,1000,0,'§1 Abs1')">
+ Fahrerlaubnis nicht mitgeführt
+</label><br><br>
+
+<label>
+<input type="checkbox" onchange="calc(this,5700,10,'§4 Abs1.2')">
+ Widerstand gegen Beamte
+</label><br><br>
+
+<label>
+<input type="checkbox" onchange="calc(this,3500,20,'§6 Abs1.7')">
+ Hausfriedensbruch
+</label>
+
+</div>
+
+<div class="card">
+<h2>Strafen Rechner</h2>
+<p>Bußgeld: $<span id="fine">0</span></p>
+<p>Haft: <span id="jail">0</span> Monate</p>
+<textarea id="charges"></textarea>
+<button onclick="copyCharges()">Paragraphen kopieren</button>
 </div>
 </div>
 </section>
 
-<section id='leader' class='page hidden'>
-<h1>Leader Panel</h1>
-<div class='grid'>
-<div class='card'>
+<section id="leader" class="page">
+<div class="card">
+<h2>Leader Panel</h2>
+
 <h3>Benutzerverwaltung</h3>
-<button class='btn'>Passwort zurücksetzen</button>
-</div>
-<div class='card'>
+<button class="action">Passwort zurücksetzen</button>
+
 <h3>Rollenrechte</h3>
-<button class='btn'>Rechte bearbeiten</button>
-</div>
-</div>
-</section>
+<button class="action">Rechte bearbeiten</button>
 
 </div>
-</div>
+</section>
 
 <script>
-let firstLogin=true;
-function login(){
- if(firstLogin){
- document.getElementById('login').classList.add('hidden');
- document.getElementById('changePw').classList.remove('hidden');
- } else openApp();
+function showPage(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
 }
-function changePw(){
- if(newpw1.value!==newpw2.value){alert('Passwörter unterschiedlich');return}
- firstLogin=false;openApp();
-}
-function openApp(){
- document.getElementById('changePw').classList.add('hidden');
- document.getElementById('login').classList.add('hidden');
- document.getElementById('app').classList.remove('hidden');
-}
-function show(id){
- document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
- document.getElementById(id).classList.remove('hidden');
-}
-let fine=0,jail=0,pars=[];
+
+let fine=0,jail=0,list=[];
+
 function calc(box,f,j,p){
- if(box.checked){fine+=f;jail+=j;pars.push(p)}
- else{fine-=f;jail-=j;pars=pars.filter(x=>x!==p)}
- sumFine.innerText=fine;
- sumJail.innerText=jail;
- charges.value=pars.join(', ')
+if(box.checked){
+fine+=f;
+jail+=j;
+list.push(p);
+}else{
+fine-=f;
+jail-=j;
+list=list.filter(x=>x!==p);
 }
-function copyCharges(){navigator.clipboard.writeText(charges.value);alert('Kopiert');}
-function filterOffenses(){
- let q=search.value.toLowerCase();
- document.querySelectorAll('#fineTable tr[data-title]').forEach(r=>{
- r.style.display=r.dataset.title.toLowerCase().includes(q)?'':'none';
-})}
+document.getElementById('fine').innerText=fine;
+document.getElementById('jail').innerText=jail;
+document.getElementById('charges').value=list.join(", ");
+}
+
+function copyCharges(){
+navigator.clipboard.writeText(
+document.getElementById('charges').value
+);
+alert("Kopiert");
+}
 </script>
+
 </body>
 </html>
