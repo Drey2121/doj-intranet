@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+</tr>
+<tr data-title='Widerstand gegen Beamte'>
+<td><input type='checkbox' onchange='calc(this,5700,10,"§4 Abs1.2")'></td><td>§4 Abs1.2</td><td>Widerstand gegen Beamte</td><td>5700</td><td>10</td>
+</tr>
+</table>
+</div>
+<div class='card summary'>
+<h3>Strafen Rechner</h3>
+<p>Bußgeld: $<span id='sumFine'>0</span></p>
+<p>Haft: <span id='sumJail'>0</span> Monate</p>
+<textarea id='charges' rows='8'></textarea>
+<button class='btn' onclick='copyCharges()'>Paragraphen kopieren</button>
+</div>
+</div>
+</section>
+
+<section id='leader' class='page hidden'>
+<h1>Leader Panel</h1>
+<div class='grid'>
+<div class='card'>
+<h3>Benutzerverwaltung</h3>
+<button class='btn'>Passwort zurücksetzen</button>
+</div>
+<div class='card'>
+<h3>Rollenrechte</h3>
+<button class='btn'>Rechte bearbeiten</button>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+
+<script>
+let firstLogin=true;
+function login(){
+ if(firstLogin){
+ document.getElementById('login').classList.add('hidden');
+ document.getElementById('changePw').classList.remove('hidden');
+ } else openApp();
+}
+function changePw(){
+ if(newpw1.value!==newpw2.value){alert('Passwörter unterschiedlich');return}
+ firstLogin=false;openApp();
+}
+function openApp(){
+ document.getElementById('changePw').classList.add('hidden');
+ document.getElementById('login').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
+}
+function show(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+}
+let fine=0,jail=0,pars=[];
+function calc(box,f,j,p){
+ if(box.checked){fine+=f;jail+=j;pars.push(p)}
+ else{fine-=f;jail-=j;pars=pars.filter(x=>x!==p)}
+ sumFine.innerText=fine;
+ sumJail.innerText=jail;
+ charges.value=pars.join(', ')
+}
+function copyCharges(){navigator.clipboard.writeText(charges.value);alert('Kopiert');}
+function filterOffenses(){
+ let q=search.value.toLowerCase();
+ document.querySelectorAll('#fineTable tr[data-title]').forEach(r=>{
+ r.style.display=r.dataset.title.toLowerCase().includes(q)?'':'none';
+})}
+</script>
+</body>
+</html>
